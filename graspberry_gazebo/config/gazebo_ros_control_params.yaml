@@ -1,0 +1,18 @@
+# For using as hardware interface a PositionJointInterface defined in the urdf
+gazebo_ros_control: 
+  pid_gains:  
+    Plink1_plateM: 
+      p: 15000 
+      i: 100
+      d: 0.0
+    plate_R1link2M: 
+      p: 400  
+      i: 5 
+      d: 0 
+    R1link2_R2link3M: 
+      p: 400
+      i: 5
+      d: 0
+
+
+# load those rosparam in a launch file

@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="thorvald_harvester">
+  <xacro:arg name="tf_prefix" default=""/>
+
+
+  <xacro:include filename="$(find thorvald_description)/urdf/thorvald_model.xacro">
+    <xacro:arg name="tf_prefix" value="$(arg tf_prefix)" />
+  </xacro:include>
+
+  <xacro:include filename="$(find thorvald_example_robots)/urdf/tall_robot/uvtun_extras.xacro">
+    <xacro:arg name="tf_prefix" value="$(arg tf_prefix)" />
+  </xacro:include>
+
+
+  <xacro:include filename="PRRarm_extras.xacro">
+    <xacro:arg name="tf_prefix" value="$(arg tf_prefix)" />
+  </xacro:include> 
+</robot>
+
+
+
+
+
+

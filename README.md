@@ -1,1 +1,6 @@
-# InProMP_scaraIROS
+# GRASPberry IntProMP
+
+This repo is WIP for coding enhancement, cleaning
+To playback gazebo records : gazebo -u -p ~/... path to /gzserver/state.log
+
+

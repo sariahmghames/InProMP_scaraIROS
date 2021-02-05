@@ -1,0 +1,532 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="PRRarm">
+
+<xacro:arg name="tf_prefix" default=""/>
+
+
+<!-- Define link1 of 3dof Manip -->
+<link name="$(arg tf_prefix)/Plink1">
+  <inertial>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <mass value="1"/>
+    <inertia
+      ixx="1.0" ixy="0.0" ixz="0.0"
+      iyy="1.0" iyz="0.0" 
+      izz="1.0"/>
+  </inertial>
+  <collision>
+    <geometry>
+      <mesh filename="package://graspberry_description/scara_arm/meshes/Plink1.stl"/>
+    </geometry>
+  </collision>
+  <visual>
+    <geometry>
+      <mesh filename="package://graspberry_description/scara_arm/meshes/Plink1.stl"/>
+    </geometry>
+    <material name="whiter">
+      <color rgba="1 1 1 1"/>
+    </material>
+  </visual>
+</link>
+<gazebo reference="$(arg tf_prefix)/Plink1">
+  <mu1>0.5</mu1>
+  <mu2>0.5</mu2>
+  <selfCollide>true</selfCollide>
+  <kp  value="10.0" />
+  <kd  value="1.0" />
+  <material>Gazebo/White</material>
+</gazebo>
+
+
+
+<joint name="$(arg tf_prefix)/uvtun_frame_Plink1" type="fixed"> 
+  <parent link="$(arg tf_prefix)/uvtun_frame"/>
+  <child link="$(arg tf_prefix)/Plink1"/>
+  <origin xyz="0.09 0.5 0.53" rpy="${pi/2} -${pi/2} ${pi}"/>  <!-- xyz="0.09 0.26375 0.53" -->
+</joint> 
+
+
+<!-- Define Transformation from parent uv_tun to child Plink1 frame -->
+
+<!-- Define plate of 3dof Manip -->
+<link name="$(arg tf_prefix)/arm_plate">
+  <inertial>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <mass value="1"/>
+    <inertia
+      ixx="1.0" ixy="0.0" ixz="0.0"
+      iyy="1.0" iyz="0.0" 
+      izz="1.0"/>
+  </inertial>
+  <collision>
+    <geometry>
+      <mesh filename="package://graspberry_description/scara_arm/meshes/plate.stl"/>
+    </geometry>
+  </collision>
+  <visual>
+    <geometry>
+      <mesh filename="package://graspberry_description/scara_arm/meshes/plate.stl"/>
+    </geometry>
+    <material name="whiter">
+      <color rgba="1 1 1 1"/>
+    </material>
+  </visual>
+</link>
+<gazebo reference="$(arg tf_prefix)/arm_plate">
+  <mu1>0.5</mu1>
+  <mu2>0.5</mu2>
+  <selfCollide>true</selfCollide>
+  <kp  value="1000.0" />
+  <kd  value="1.0" />
+  <material>Gazebo/White</material>
+</gazebo>
+
+
+<joint name="$(arg tf_prefix)/Plink1_plate" type="prismatic">
+  <parent link="$(arg tf_prefix)/Plink1"/>
+  <child link="$(arg tf_prefix)/arm_plate"/>
+  <origin xyz="0 0.03775 0" rpy="0 0 0"/>  <!-- 0 0.78575 0 -->
+  <axis xyz="0 0 1" />
+  <dynamics damping="1" friction="5"/>
+  <limit 
+      lower="0" upper="0.51"
+      effort="1000" velocity="0.5" />
+</joint> 
+<transmission name="tran10">
+  <type>transmission_interface/SimpleTransmission</type>
+  <joint name="$(arg tf_prefix)/Plink1_plate">
+    <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+  </joint>
+  <actuator name="$(arg tf_prefix)/prismatic_arm_act">
+    <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    <mechanicalReduction>1</mechanicalReduction>
+  </actuator>
+</transmission> 
+
+
+
+<!-- Define link2 of 3dof Manip -->
+<link name="$(arg tf_prefix)/R1link2">
+  <inertial>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <mass value="1"/>
+    <inertia
+      ixx="1.0" ixy="0.0" ixz="0.0"
+      iyy="1.0" iyz="0.0" 
+      izz="1.0"/>
+  </inertial>
+  <collision>
+    <geometry>
+      <mesh filename="package://graspberry_description/scara_arm/meshes/R1link2.stl"/>
+    </geometry>
+  </collision>
+  <visual>
+    <geometry>
+      <mesh filename="package://graspberry_description/scara_arm/meshes/R1link2.stl"/>
+    </geometry>
+    <material name="whiter">
+      <color rgba="1 1 1 1"/>
+    </material>
+  </visual>
+</link>
+<gazebo reference="$(arg tf_prefix)/R1link2">
+  <mu1>0.5</mu1>
+  <mu2>0.5</mu2>
+  <selfCollide>true</selfCollide>
+  <kp  value="1000.0" />
+  <kd  value="1.0" />
+  <material>Gazebo/White</material>
+</gazebo>
+
+
+
+<joint name="$(arg tf_prefix)/plate_R1link2" type="revolute">
+  <parent link="$(arg tf_prefix)/arm_plate"/>
+  <child link="$(arg tf_prefix)/R1link2"/>
+  <origin xyz="0.0347489 0.06725 0" rpy="0 0 ${pi/2}"/>  <!-- 0 0 -${pi/6} -->
+  <axis xyz="0 0 1" />
+  <dynamics damping="10" friction="0.2"/>
+  <limit 
+      lower="-3.14" upper="0"
+      effort="500" velocity="0.5" />
+</joint> 
+<transmission name="tran02">
+  <type>transmission_interface/SimpleTransmission</type>
+  <joint name="$(arg tf_prefix)/plate_R1link2">
+    <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+  </joint>
+  <actuator name="$(arg tf_prefix)/plate_R1link2_act">
+    <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    <mechanicalReduction>1</mechanicalReduction>
+  </actuator>
+</transmission>
+
+
+
+<!-- Define Transformation from parent Plink1 to child R1link2 frame -->
+
+<!-- Define link3 of 3dof Manip -->
+<link name="$(arg tf_prefix)/R2link3">
+  <inertial>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <mass value="1"/>
+    <inertia
+      ixx="1.0" ixy="0.0" ixz="0.0"
+      iyy="1.0" iyz="0.0" 
+      izz="1.0"/>
+  </inertial>
+  <collision>
+    <geometry>
+      <mesh filename="package://graspberry_description/scara_arm/meshes/R2link3.stl"/>
+    </geometry>
+  </collision>
+  <visual>
+    <geometry>
+      <mesh filename="package://graspberry_description/scara_arm/meshes/R2link3.stl"/>
+    </geometry>
+    <material name="whiter">
+      <color rgba="1 1 1 1"/>
+    </material>
+  </visual>
+</link>
+<gazebo reference="$(arg tf_prefix)/R2link3">
+  <mu1>0.5</mu1>
+  <mu2>0.5</mu2>
+  <selfCollide>true</selfCollide>
+  <kp  value="1000.0" />
+  <kd  value="1.0" />
+  <material>Gazebo/White</material>
+</gazebo>
+
+
+<joint name="$(arg tf_prefix)/R1link2_R2link3" type="revolute">
+  <parent link="$(arg tf_prefix)/R1link2"/>
+  <child link="$(arg tf_prefix)/R2link3"/>
+  <origin xyz="0 0.21 0" rpy="0 0 0"/>   <!-- 0 0 -${pi/2} -->
+  <axis xyz="0 0 1" />
+  <dynamics damping="5" friction="0.2"/>
+  <limit 
+      lower="0" upper="3.14"
+      effort="100" velocity="0.5" />
+</joint> 
+<transmission name="tran23">
+  <type>transmission_interface/SimpleTransmission</type>
+  <joint name="$(arg tf_prefix)/R1link2_R2link3">
+    <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+  </joint>
+  <actuator name="$(arg tf_prefix)/R1link2_R2link3_act">
+    <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    <mechanicalReduction>1</mechanicalReduction>
+  </actuator>
+</transmission>
+<!-- Define Transformation from parent R1link2 to child R2link3 frame -->
+
+
+
+<!-- Define Gripper -->
+<link name="$(arg tf_prefix)/gripper">
+  <inertial>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <mass value="0.8"/>
+    <inertia
+      ixx="0.000288" ixy="0.0" ixz="0.0"
+      iyy="0.000288" iyz="0.0" 
+      izz="0.000288"/>
+  </inertial>
+  <collision>
+    <geometry>
+      <mesh filename="package://graspberry_description/scara_arm/meshes/gripper.stl"/>
+    </geometry>
+  </collision>
+  <visual>
+    <geometry>
+      <mesh filename="package://graspberry_description/scara_arm/meshes/gripper.stl"/>
+    </geometry>
+    <material name="whiter">
+      <color rgba="1 1 1 1"/>
+    </material>
+  </visual>
+</link>
+<gazebo reference="$(arg tf_prefix)/gripper">
+  <mu1>0.5</mu1>
+  <mu2>0.5</mu2>
+  <selfCollide>true</selfCollide>
+  <kp  value="1000.0" />
+  <kd  value="1.0" />
+  <material>Gazebo/White</material>
+</gazebo>
+
+
+<joint name="$(arg tf_prefix)/R2link3_gripper" type="fixed">
+  <parent link="$(arg tf_prefix)/R2link3"/>
+  <child link="$(arg tf_prefix)/gripper"/>
+  <origin xyz="0 0.23 0.1016" rpy="0 0 0"/>   
+</joint> 
+
+
+
+<!-- Add 2nd arm on opposite side f reference frame of the uvtun -->
+<!-- Define link1 of 3dof Manip -->
+<link name="$(arg tf_prefix)/Plink1M">
+  <inertial>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <mass value="1"/>
+    <inertia
+      ixx="1.0" ixy="0.0" ixz="0.0"
+      iyy="1.0" iyz="0.0" 
+      izz="1.0"/>
+  </inertial>
+  <collision>
+    <geometry>
+      <mesh filename="package://graspberry_description/scara_arm/meshes/Plink1-Mirror.stl"/>
+    </geometry>
+  </collision>
+  <visual>
+    <geometry>
+      <mesh filename="package://graspberry_description/scara_arm/meshes/Plink1-Mirror.stl"/>
+    </geometry>
+    <material name="whiter">
+      <color rgba="1 1 1 1"/>
+    </material>
+  </visual>
+</link>
+<gazebo reference="$(arg tf_prefix)/Plink1M">
+  <mu1>0.5</mu1>
+  <mu2>0.5</mu2>
+  <selfCollide>true</selfCollide>
+  <!--<kp  value="1000.0" />
+  <kd  value="1.0" />-->
+  <material>Gazebo/White</material>
+</gazebo>
+
+
+<joint name="$(arg tf_prefix)/uvtun_frame_Plink1M" type="fixed"> 
+  <parent link="$(arg tf_prefix)/uvtun_frame"/>
+  <child link="$(arg tf_prefix)/Plink1M"/>
+  <origin xyz="1.2305 0.27575 0.53" rpy="${pi/2} ${pi/2} ${pi}"/> <!-- 1.23375 0.6 0.669 -->
+</joint> 
+<!-- Define Transformation from parent uv_tun to child Plink1 frame -->
+
+
+<!-- Define plate of 3dof Manip -->
+<link name="$(arg tf_prefix)/arm_plateM">
+  <inertial>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <mass value="0.8"/>
+    <inertia
+      ixx="1" ixy="0.0" ixz="0.0"
+      iyy="1" iyz="0.0" 
+      izz="1"/>
+  </inertial>
+  <collision>
+    <geometry>
+      <mesh filename="package://graspberry_description/scara_arm/meshes/plate-Mirror.stl"/>
+    </geometry>
+  </collision>
+  <visual>
+    <geometry>
+      <mesh filename="package://graspberry_description/scara_arm/meshes/plate-Mirror.stl"/>
+    </geometry>
+    <material name="whiter">
+      <color rgba="1 1 1 1"/>
+    </material>
+  </visual>
+</link>
+<gazebo reference="$(arg tf_prefix)/arm_plate">
+  <mu1>0.5</mu1>
+  <mu2>0.5</mu2>
+  <selfCollide>true</selfCollide>
+  <!--<kp  value="1000.0" />
+  <kd  value="1.0" />-->
+  <material>Gazebo/White</material>
+</gazebo>
+
+
+<joint name="$(arg tf_prefix)/Plink1_plateM" type="prismatic">
+  <parent link="$(arg tf_prefix)/Plink1M"/>
+  <child link="$(arg tf_prefix)/arm_plateM"/>
+  <origin xyz="0 0.03775 0" rpy="0 0 0"/> 
+  <axis xyz="0 0 1" />
+  <dynamics damping="5" friction="100"/> 
+  <limit 
+      lower="0" upper="0.51" 
+      effort="500" velocity="0.1" />
+</joint> 
+<transmission name="tran10M">
+  <type>transmission_interface/SimpleTransmission</type>
+  <joint name="$(arg tf_prefix)/Plink1_plateM">
+    <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+  </joint>
+  <actuator name="$(arg tf_prefix)/prismatic_arm_actM">
+    <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    <mechanicalReduction>1</mechanicalReduction>
+  </actuator> 
+</transmission> 
+
+
+<!-- Define link2 of 3dof Manip -->
+<link name="$(arg tf_prefix)/R1link2M">
+  <inertial>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <mass value="2"/>
+    <inertia
+      ixx="1" ixy="0.0" ixz="0.0"
+      iyy="1" iyz="0.0" 
+      izz="1"/>
+  </inertial>
+  <collision>
+    <geometry>
+      <mesh filename="package://graspberry_description/scara_arm/meshes/R1link2-Mirror.stl"/>
+    </geometry>
+  </collision>
+  <visual>
+    <geometry>
+      <mesh filename="package://graspberry_description/scara_arm/meshes/R1link2-Mirror.stl"/>
+    </geometry>
+    <material name="whiter">
+      <color rgba="1 1 1 1"/>
+    </material>
+  </visual>
+</link>
+<gazebo reference="$(arg tf_prefix)/R1link2M">
+  <mu1>0.5</mu1>
+  <mu2>0.5</mu2>
+  <selfCollide>true</selfCollide>
+  <material>Gazebo/White</material>
+</gazebo>
+
+
+
+<joint name="$(arg tf_prefix)/plate_R1link2M" type="revolute">
+  <parent link="$(arg tf_prefix)/arm_plateM"/>
+  <child link="$(arg tf_prefix)/R1link2M"/>
+  <origin xyz="0.0347489 0.06725 0" rpy="0 0 ${pi/2}"/>  <!-- ${pi/2} -->
+  <axis xyz="0 0 1" />
+  <dynamics damping="10" friction="0.2"/>
+  <limit 
+      lower="-3.14" upper="0"
+      effort="100" velocity="0.5" />
+</joint> 
+<transmission name="tran02M">
+  <type>transmission_interface/SimpleTransmission</type>
+  <joint name="$(arg tf_prefix)/plate_R1link2M">
+    <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+  </joint>
+  <actuator name="$(arg tf_prefix)/plate_R1link2M_act">
+    <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    <mechanicalReduction>1</mechanicalReduction>
+  </actuator>
+</transmission> 
+<!-- Define Transformation from parent Plink1 to child R1link2 frame -->
+
+
+<!-- Define link3 of 3dof Manip -->
+<link name="$(arg tf_prefix)/R2link3M">
+  <inertial>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <mass value="1"/>
+    <inertia
+      ixx="1" ixy="0.0" ixz="0.0"
+      iyy="1" iyz="0.0" 
+      izz="1"/>
+  </inertial>
+  <collision>
+    <geometry>
+      <mesh filename="package://graspberry_description/scara_arm/meshes/R2link3-Mirror.stl"/>
+    </geometry>
+  </collision>
+  <visual>
+    <geometry>
+      <mesh filename="package://graspberry_description/scara_arm/meshes/R2link3-Mirror.stl"/>
+    </geometry>
+    <material name="whiter">
+      <color rgba="1 1 1 1"/>
+    </material>
+  </visual>
+</link>
+<gazebo reference="$(arg tf_prefix)/R2link3M">
+  <mu1>0.5</mu1>
+  <mu2>0.5</mu2>
+  <selfCollide>true</selfCollide>
+  <material>Gazebo/White</material>
+</gazebo>
+
+
+<joint name="$(arg tf_prefix)/R1link2_R2link3M" type="revolute">
+  <parent link="$(arg tf_prefix)/R1link2M"/>
+  <child link="$(arg tf_prefix)/R2link3M"/>
+  <origin xyz="0 0.21 0" rpy="0 0 0"/> 
+  <axis xyz="0 0 1" />
+  <dynamics damping="5" friction="0.2"/>
+  <limit 
+      lower="0" upper="3.14"
+      effort="100" velocity="0.5" />
+</joint> 
+<transmission name="tran23M">
+  <type>transmission_interface/SimpleTransmission</type>
+  <joint name="$(arg tf_prefix)/R1link2_R2link3M">
+    <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+  </joint>
+  <actuator name="$(arg tf_prefix)/R1link2_R2link3M_act">
+    <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    <mechanicalReduction>1</mechanicalReduction>
+  </actuator>
+</transmission> 
+<!-- Define Transformation from parent R1link2 to child R2link3 frame -->
+
+
+<!-- Define Gripper -->
+<link name="$(arg tf_prefix)/gripperM">
+  <inertial>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <mass value="0.8"/>
+    <inertia
+      ixx="0.000288" ixy="0.0" ixz="0.0"
+      iyy="0.000288" iyz="0.0" 
+      izz="0.000288"/>
+  </inertial>
+  <collision>
+    <geometry>
+      <mesh filename="package://graspberry_description/scara_arm/meshes/gripper-Mirror.stl"/>
+    </geometry>
+  </collision>
+  <visual>
+    <geometry>
+      <mesh filename="package://graspberry_description/scara_arm/meshes/gripper-Mirror.stl"/>
+    </geometry>
+    <material name="whiter">
+      <color rgba="1 1 1 1"/>
+    </material>
+  </visual>
+</link>
+<gazebo reference="$(arg tf_prefix)/gripperM">
+  <mu1>0.5</mu1>
+  <mu2>0.5</mu2>
+  <minDepth>0</minDepth>
+  <maxContacts>2</maxContacts>
+  <maxVel>0.01</maxVel>
+  <selfCollide>true</selfCollide>
+  <kp  value="1000" />
+  <kd  value="1.0" />
+  <material>Gazebo/White</material>
+</gazebo>
+
+
+<joint name="$(arg tf_prefix)/R2link3_gripperM" type="fixed">
+  <parent link="$(arg tf_prefix)/R2link3M"/>
+  <child link="$(arg tf_prefix)/gripperM"/>
+  <origin xyz="0 0.23 0.1016" rpy="0 0 0"/>   
+</joint> 
+
+
+<gazebo>
+  <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">  <!-- libgazebo_ros_control.so is generated in devel/lib after compilation -->
+  	<robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType>
+    <legacyModeNS>true</legacyModeNS>
+    <robotNamespace>/scara_arm</robotNamespace>
+  </plugin>
+</gazebo>
+
+
+</robot>
+

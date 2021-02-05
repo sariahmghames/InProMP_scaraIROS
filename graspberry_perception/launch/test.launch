@@ -1,0 +1,7 @@
+<launch>
+
+  <include file="$(find realsense2_camera)/launch/rs_aligned_depth.launch" />
+
+  <node pkg="rviz" type="rviz" name="graspberry_rviz" args="-d $(find graspberry_bringup)/rviz/graspberry.rviz"/>
+
+</launch>

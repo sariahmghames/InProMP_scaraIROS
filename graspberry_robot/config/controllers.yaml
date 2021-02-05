@@ -1,0 +1,40 @@
+scara_arm:
+  # Publish all joint states -----------------------------------
+  joint_state_controller:
+    type: joint_state_controller/JointStateController
+    publish_rate: 30
+  # Position Controllers ---------------------------------------
+  position:
+    joint_0_controller:
+      type: position_controllers/JointPositionController
+      joint: joint_0
+    joint_1_controller:
+      type: position_controllers/JointPositionController
+      joint: joint_1
+    joint_2_controller:
+      type: position_controllers/JointPositionController
+      joint: joint_2
+
+
+cartesian_arm:
+  joint_state_controller:
+      type: joint_state_controller/JointStateController
+  position:
+      joint_0_controller:
+        type: position_controllers/JointPositionController
+        joint: joint_0
+      joint_1_controller:
+        type: position_controllers/JointPositionController
+        joint: joint_1
+      joint_2_controller:
+        type: position_controllers/JointPositionController
+        joint: joint_2
+
+single_arm:
+  joint_state_controller:
+      type: joint_state_controller/JointStateController
+      publish_rate: 50
+  position:
+      joint_0_controller:
+        type: position_controllers/JointPositionController
+        joint: joint_0

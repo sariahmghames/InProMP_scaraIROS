@@ -1,0 +1,128 @@
+<launch>
+
+  <!-- Load joint controller configurations from YAML file to parameter server -->
+  <rosparam file="$(find graspberry_gazebo)/config/controllers.yaml" command="load"/>
+  <arg name="group_control" default="false" />
+  <arg name="traj_control" default="false" />
+  <!-- load the controllers -->
+  <group ns="scara_arm">
+    <group unless="$(arg traj_control)">
+      <node unless="$(arg group_control)"
+        name="controller_spawner" pkg="controller_manager" type="spawner" 
+        respawn="false"
+        output="screen" 
+        args="link1_controller link2_controller link3_controller link1M_controller link2M_controller link3M_controller joint_state_controller"/>
+      <node if="$(arg group_control)"
+        name="controller_spawner" pkg="controller_manager" type="spawner" 
+        respawn="false"
+        output="screen" 
+        args="joint_state_controller arm_pos_controller"/>
+    </group>
+    <group if="$(arg traj_control)">
+      <node name="controller_spawner" pkg="controller_manager" type="spawner" 
+      respawn="false"
+      output="screen" 
+      args="joint_state_controller arm_traj_controller "/>
+    </group> 
+
+    <!-- convert joint states to TF transforms for rviz, etc -->
+    <node name="robot_state_publisher_scara" pkg="robot_state_publisher" type="robot_state_publisher"
+      respawn="false" output="screen">
+      <param name="tf_prefix" value="/scara_arm" />
+      <remap from="/joint_states" to="/scara_arm/joint_states" />
+    </node>
+  </group>
+
+
+  
+
+  <!--<group ns="straw_cluster1">
+    <node 
+      name="controller_spawner" pkg="controller_manager" type="spawner" 
+      respawn="false"
+      output="screen" 
+      args="stem1y_controller stem1x_controller stem2y_controller stem2x_controller stem3y_controller stem3x_controller"/>
+
+    <node name="robot_state_publisher_scara" pkg="robot_state_publisher" type="robot_state_publisher"
+      respawn="false" output="screen">
+      <param name="tf_prefix" value="/straw_cluster1" />
+      <remap from="/joint_states" to="/straw_cluster1/joint_states" />
+    </node>
+  </group> -->
+
+  <!--<group ns="straw_cluster2">
+    <node 
+      name="controller_spawner" pkg="controller_manager" type="spawner" 
+      respawn="false"
+      output="screen" 
+      args="stem4y_controller stem4x_controller stem5y_controller stem5x_controller stem6y_controller stem6x_controller"/>
+
+    <node name="robot_state_publisher_scara" pkg="robot_state_publisher" type="robot_state_publisher"
+      respawn="false" output="screen">
+      <param name="tf_prefix" value="/straw_cluster2" />
+      <remap from="/joint_states" to="/straw_cluster2/joint_states" />
+    </node>
+  </group> -->
+
+
+  <!-- <group ns="straw_cluster3">
+    <node 
+      name="controller_spawner" pkg="controller_manager" type="spawner" 
+      respawn="false"
+      output="screen" 
+      args="stem7y_controller stem7x_controller stem8y_controller stem8x_controller stem9y_controller stem9x_controller"/>
+
+    <node name="robot_state_publisher_scara" pkg="robot_state_publisher" type="robot_state_publisher"
+      respawn="false" output="screen">
+      <param name="tf_prefix" value="/straw_cluster3" />
+      <remap from="/joint_states" to="/straw_cluster3/joint_states" />
+    </node>
+  </group> -->
+
+
+  <!--<group ns="straw_cluster4">
+    <node 
+      name="controller_spawner" pkg="controller_manager" type="spawner" 
+      respawn="false"
+      output="screen" 
+      args="stem10y_controller stem10x_controller stem11y_controller stem11x_controllers stem12y_controller stem12x_controller"/>
+
+    <node name="robot_state_publisher_scara" pkg="robot_state_publisher" type="robot_state_publisher"
+      respawn="false" output="screen">
+      <param name="tf_prefix" value="/straw_cluster4" />
+      <remap from="/joint_states" to="/straw_cluster4/joint_states" />
+    </node>
+  </group> -->
+
+  <!--<group ns="straw_cluster5">
+    <node 
+      name="controller_spawner" pkg="controller_manager" type="spawner" 
+      respawn="false"
+      output="screen" 
+      args="stem13y_controller stem13x_controller stem14y_controller stem14x_controller stem15y_controller stem15x_controller"/>
+
+    <node name="robot_state_publisher_scara" pkg="robot_state_publisher" type="robot_state_publisher"
+      respawn="false" output="screen">
+      <param name="tf_prefix" value="/straw_cluster5" />
+      <remap from="/joint_states" to="/straw_cluster5/joint_states" />
+    </node>
+  </group> -->
+
+
+  <!--<group ns="straw_cluster6">
+    <node 
+      name="controller_spawner" pkg="controller_manager" type="spawner" 
+      respawn="false"
+      output="screen" 
+      args="stem16y_controller stem16x_controller stem17y_controller stem17x_controller stem18y_controller stem18x_controller"/>
+
+    <node name="robot_state_publisher_scara" pkg="robot_state_publisher" type="robot_state_publisher"
+      respawn="false" output="screen">
+      <param name="tf_prefix" value="/straw_cluster6" />
+      <remap from="/joint_states" to="/straw_cluster6/joint_states" />
+    </node>
+  </group> -->
+
+
+
+</launch>

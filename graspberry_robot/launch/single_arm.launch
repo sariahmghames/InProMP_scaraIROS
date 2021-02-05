@@ -1,0 +1,14 @@
+<launch>
+    <rosparam file="$(find graspberry_robot)/config/hardware.yaml" command="load"/>
+    <rosparam file="$(find graspberry_robot)/config/controllers.yaml" command="load"/>
+
+    <node name="graspberry_robot" pkg="graspberry_robot" type="graspberry_robot_node" output="screen">
+        <param name="robot_name" value="single_arm" />
+    </node>
+
+    <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen" ns="/"
+        args="
+            /single_arm/joint_state_controller
+            /single_arm/position/joint_0_controller
+        "/>
+</launch>

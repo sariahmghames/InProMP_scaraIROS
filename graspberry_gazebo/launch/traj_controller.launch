@@ -1,0 +1,8 @@
+<?xml version="1.0" ?>
+
+<launch>
+
+	<node pkg="graspberry_gazebo" name="traj_controller" type="traj_animation_basic" output="screen" />
+
+</launch>
+

@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="Harvesting_extras">
+  <xacro:arg name="tf_prefix" default=""/>
+
+
+  <xacro:include filename="$(find thorvald_example_robots)/urdf/tall_robot/uvtun_extras.xacro">
+    <xacro:arg name="tf_prefix" value="$(arg tf_prefix)" />
+  </xacro:include>
+
+
+  <xacro:include filename="PRRarm_extras.xacro">
+    <xacro:arg name="tf_prefix" value="$(arg tf_prefix)" />
+  </xacro:include> 
+
+  <xacro:include filename="$(find graspberry_description)/straw/urdf/cluster1_extras.xacro">
+    <xacro:arg name="tf_prefix" value="$(arg tf_prefix)" /> 
+  </xacro:include> 
+
+  <!--<xacro:include filename="$(find graspberry_description)/straw/urdf/cluster2_extras.xacro">
+    <xacro:arg name="tf_prefix" value="$(arg tf_prefix)" />
+  </xacro:include> -->
+
+  <!--<xacro:include filename="$(find graspberry_description)/straw/urdf/cluster3_extras.xacro">
+    <xacro:arg name="tf_prefix" value="$(arg tf_prefix)" />
+  </xacro:include> -->
+
+  <xacro:include filename="$(find graspberry_description)/straw/urdf/cluster4_extras.xacro">
+    <xacro:arg name="tf_prefix" value="$(arg tf_prefix)" />
+  </xacro:include>  <!--problem in set collision true for this configuration --> 
+
+  <xacro:include filename="$(find graspberry_description)/straw/urdf/cluster5_extras.xacro">
+    <xacro:arg name="tf_prefix" value="$(arg tf_prefix)" />
+  </xacro:include> 
+
+  <xacro:include filename="$(find graspberry_description)/straw/urdf/cluster6_extras.xacro">
+    <xacro:arg name="tf_prefix" value="$(arg tf_prefix)" />
+  </xacro:include> 
+
+</robot>
+
+
+
+
+
+

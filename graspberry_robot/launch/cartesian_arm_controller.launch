@@ -1,0 +1,17 @@
+<launch>
+    <rosparam file="$(find graspberry_robot)/config/hardware.yaml" command="load"/>
+    <rosparam file="$(find graspberry_robot)/config/controllers.yaml" command="load"/>
+    <rosparam file="$(find graspberry_robot)/config/joint_limits.yaml" command="load"/>
+
+    <node name="graspberry_robot" pkg="graspberry_robot" type="graspberry_robot_node" output="screen">
+        <param name="robot_name" value="cartesian_arm" />
+    </node>
+
+    <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen" ns="/"
+        args="
+            /cartesian_arm/joint_state_controller
+            /cartesian_arm/position/joint_0_controller
+            /cartesian_arm/position/joint_1_controller
+            /cartesian_arm/position/joint_2_controller
+        "/>
+</launch>

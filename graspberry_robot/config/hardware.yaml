@@ -1,0 +1,22 @@
+scara_arm:
+  hardware_interface:
+     loop_hz: 50 # Hz
+     joints:
+       - joint_0
+       - joint_1
+       - joint_2
+
+cartesian_arm:
+  hardware_interface:
+     loop_hz: 10 # Hz
+     joints:
+       - joint_0
+       - joint_1
+       - joint_2
+
+single_arm:
+  hardware_interface:
+     loop_hz: 50 # Hz
+     joints:
+       - joint_0
+

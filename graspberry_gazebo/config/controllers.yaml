@@ -1,0 +1,289 @@
+scara_arm:  # group namespace
+  # Publish all joint states -----------------------------------
+  joint_state_controller:
+    type: joint_state_controller/JointStateController
+    publish_rate: 50  
+
+  # Position Controllers ---------------------------------------
+  link1_controller:
+    type: effort_controllers/JointPositionController
+    joint: /Plink1_plate
+    pid: {p: 100, i: 0.01, d: 0.0}
+  link2_controller:
+    type: effort_controllers/JointPositionController
+    joint: /plate_R1link2
+    pid: {p: 100.0, i: 0.01, d: 0.0}
+  link3_controller:
+    type: effort_controllers/JointPositionController
+    joint: /R1link2_R2link3
+    pid: {p: 100.0, i: 0.01, d: 0.0}
+  link1M_controller:
+    type: effort_controllers/JointPositionController
+    joint: /Plink1_plateM
+    pid: {p: 15000, i: 100, d: 0.0} # 1000, 100, 0.1
+  link2M_controller:
+    type: effort_controllers/JointPositionController
+    joint: /plate_R1link2M
+    pid: {p: 200.0, i: 5.0, d: 0}
+  link3M_controller:
+    type: effort_controllers/JointPositionController
+    joint: /R1link2_R2link3M
+    pid: {p: 200.0, i: 5, d: 0}
+  arm_traj_controller:
+    type: "effort_controllers/JointTrajectoryController"
+    #type: "velocity_controllers/JointTrajectoryController"
+    joints:
+      #- /Plink1_plate
+      #- /plate_R1link2
+      #- /R1link2_R2link3
+      - /Plink1_plateM
+      - /plate_R1link2M
+      - /R1link2_R2link3M
+    gains: # Required because we're controlling an effort interface 
+      #/Plink1_plate: {p: 100,  d: 1, i: .01, i_clamp: 1}
+      #/plate_R1link2: {p: 100,  d: 1, i: .01, i_clamp: 1}
+      #/R1link2_R2link3: {p: 100,  d: 1, i: .01, i_clamp: 1}
+      Plink1_plateM: {p: 15000,  d: 0.0, i: 100, i_clamp: 1} # p=10000, d = 0.1, i=100
+      plate_R1link2M: {p: 400,  d: 0, i: 5, i_clamp: 1}
+      R1link2_R2link3M: {p: 400,  d: 0, i: 5, i_clamp: 1}
+
+    # gains: # Required because we're controlling a velocity interface 
+    #   /Plink1_plateM: {p: 100,  d: 0.0, i: 0.1, i_clamp: 1} 
+    #   /plate_R1link2M: {p: 100,  d: 0, i: 0.1, i_clamp: 1}
+    #   /R1link2_R2link3M: {p: 100,  d: 0, i: 0.1, i_clamp: 1}
+        
+
+  arm_pos_controller:
+    type: "effort_controllers/JointGroupPositionController"
+    joints:
+      - /Plink1_plate
+      - /plate_R1link2
+      - /R1link2_R2link3
+      - /Plink1_plateM
+      - /plate_R1link2M
+      - /R1link2_R2link3M
+    /Plink1_plate: 
+      pid: {p: 100,  d: 10, i: .01, i_clamp: 1}
+    /plate_R1link2: 
+      pid: {p: 100,  d: 10, i: .01, i_clamp: 1}
+    /R1link2_R2link3: 
+      pid: {p: 100,  d: 10, i: .01, i_clamp: 1}
+    /Plink1_plateM: 
+      pid: {p: 15000,  d: 0.0, i: 100, i_clamp: 1}
+    /plate_R1link2M: 
+      pid: {p: 400,  d: 0, i: 5, i_clamp: 1}
+    /R1link2_R2link3M: 
+      pid: {p: 400,  d: 0, i: 5, i_clamp: 1}
+
+  # arm_traj_controller:
+  #    action_ns: follow_joint_trajectory
+  #    type: FollowJointTrajectory
+  #    default: true
+  #    joints:
+  #     - /Plink1_plateM
+  #     - /plate_R1link2M
+  #     - /R1link2_R2link3M
+  #    gains: # Required because we're controlling an effort interface 
+  #     /Plink1_plateM: {p: 15000,  d: 0.0, i: 100, i_clamp: 1} # p=10000, d = 0.1, i=100
+  #     /plate_R1link2M: {p: 400,  d: 0, i: 5, i_clamp: 1}
+  #     /R1link2_R2link3M: {p: 400,  d: 0, i: 5, i_clamp: 1}
+
+
+# straw_cluster1:  # group namespace
+#   # Publish all joint states -----------------------------------
+#   joint_state_controller:
+#     type: joint_state_controller/JointStateController
+#     publish_rate: 50  
+
+#   # Position Controllers ---------------------------------------
+#   stem1y_controller:
+#     type: effort_controllers/JointPositionController
+#     joint: /stem1y
+#     pid: {p: 1, i: 0.01, d: 0.0}
+#   stem1x_controller:
+#     type: effort_controllers/JointPositionController
+#     joint: /stem1x
+#     pid: {p: 1, i: 0.01, d: 0.0}
+#   stem2y_controller:
+#     type: effort_controllers/JointPositionController
+#     joint: /stem2y
+#     pid: {p: 1, i: 0.01, d: 0.0}
+#   stem2x_controller:
+#     type: effort_controllers/JointPositionController
+#     joint: /stem2x
+#     pid: {p: 1, i: 0.01, d: 0.0}
+#   stem3y_controller:
+#     type: effort_controllers/JointPositionController
+#     joint: /stem3y
+#     pid: {p: 1, i: 0.01, d: 0.0}
+#   stem3x_controller:
+#     type: effort_controllers/JointPositionController
+#     joint: /stem3x
+#     pid: {p: 1, i: 0.01, d: 0.0}
+
+
+# straw_cluster2:  # group namespace
+#   # Publish all joint states -----------------------------------
+#   joint_state_controller:
+#     type: joint_state_controller/JointStateController
+#     publish_rate: 50  
+
+#   # Position Controllers ---------------------------------------
+#   stem4y_controller:
+#     type: effort_controllers/JointPositionController
+#     joint: /stem4y
+#     pid: {p: 1, i: 0.01, d: 0.0}
+#   stem4x_controller:
+#     type: effort_controllers/JointPositionController
+#     joint: /stem4x
+#     pid: {p: 1, i: 0.01, d: 0.0}
+#   stem5y_controller:
+#     type: effort_controllers/JointPositionController
+#     joint: /stem5y
+#     pid: {p: 1, i: 0.01, d: 0.0}
+#   stem5x_controller:
+#     type: effort_controllers/JointPositionController
+#     joint: /stem5x
+#     pid: {p: 1, i: 0.01, d: 0.0}
+#   stem6y_controller:
+#     type: effort_controllers/JointPositionController
+#     joint: /stem6y
+#     pid: {p: 1, i: 0.01, d: 0.0}
+#   stem6x_controller:
+#     type: effort_controllers/JointPositionController
+#     joint: /stem6x
+#     pid: {p: 1, i: 0.01, d: 0.0}
+
+
+# straw_cluster3:  # group namespace
+#   # Publish all joint states -----------------------------------
+#   joint_state_controller:
+#     type: joint_state_controller/JointStateController
+#     publish_rate: 50  
+
+#   # Position Controllers ---------------------------------------
+#   stem7y_controller:
+#     type: effort_controllers/JointPositionController
+#     joint: /stem7y
+#     pid: {p: 1, i: 0.01, d: 0.0}
+#   stem7x_controller:
+#     type: effort_controllers/JointPositionController
+#     joint: /stem7x
+#     pid: {p: 1, i: 0.01, d: 0.0}
+#   stem8y_controller:
+#     type: effort_controllers/JointPositionController
+#     joint: /stem8y
+#     pid: {p: 1, i: 0.01, d: 0.0}
+#   stem8x_controller:
+#     type: effort_controllers/JointPositionController
+#     joint: /stem8x
+#     pid: {p: 1, i: 0.01, d: 0.0}
+#   stem9y_controller:
+#     type: effort_controllers/JointPositionController
+#     joint: /stem9y
+#     pid: {p: 1, i: 0.01, d: 0.0}
+#   stem9x_controller:
+#     type: effort_controllers/JointPositionController
+#     joint: /stem9x
+#     pid: {p: 1, i: 0.01, d: 0.0}
+
+
+# straw_cluster4:  # group namespace
+#   # Publish all joint states -----------------------------------
+#   joint_state_controller:
+#     type: joint_state_controller/JointStateController
+#     publish_rate: 50  
+
+#   # Position Controllers ---------------------------------------
+#   stem10y_controller:
+#     type: effort_controllers/JointPositionController
+#     joint: /stem10y
+#     pid: {p: 50, i: 1, d: 0.0}
+#   stem10x_controller:
+#     type: effort_controllers/JointPositionController
+#     joint: /stem10x
+#     pid: {p: 50, i: 1, d: 0.0}
+#   stem11y_controller:
+#     type: effort_controllers/JointPositionController
+#     joint: /stem11y
+#     pid: {p: 50, i: 1, d: 0.0}
+#   stem11x_controller:
+#     type: effort_controllers/JointPositionController
+#     joint: /stem11x
+#     pid: {p: 50, i: 1, d: 0.0}
+#   stem12y_controller:
+#     type: effort_controllers/JointPositionController
+#     joint: /stem12y
+#     pid: {p: 50, i: 1, d: 0.0}
+#   stem12x_controller:
+#     type: effort_controllers/JointPositionController
+#     joint: /stem12x
+#     pid: {p: 50, i: 1, d: 0.0}
+
+
+# straw_cluster5:  # group namespace
+#   # Publish all joint states -----------------------------------
+#   joint_state_controller:
+#     type: joint_state_controller/JointStateController
+#     publish_rate: 50  
+
+#   # Position Controllers ---------------------------------------
+#   stem13y_controller:
+#     type: effort_controllers/JointPositionController
+#     joint: /stem13y
+#     pid: {p: 1, i: 0.01, d: 0.0}
+#   stem13x_controller:
+#     type: effort_controllers/JointPositionController
+#     joint: /stem13x
+#     pid: {p: 1, i: 0.01, d: 0.0}
+#   stem14y_controller:
+#     type: effort_controllers/JointPositionController
+#     joint: /stem14y
+#     pid: {p: 1, i: 0.01, d: 0.0}
+#   stem14x_controller:
+#     type: effort_controllers/JointPositionController
+#     joint: /stem14x
+#     pid: {p: 1, i: 0.01, d: 0.0}
+#   stem15y_controller:
+#     type: effort_controllers/JointPositionController
+#     joint: /stem15y
+#     pid: {p: 1, i: 0.01, d: 0.0}
+#   stem15x_controller:
+#     type: effort_controllers/JointPositionController
+#     joint: /stem15x
+#     pid: {p: 1, i: 0.01, d: 0.0}
+
+
+# straw_cluster6:  # group namespace
+#   # Publish all joint states -----------------------------------
+#   joint_state_controller:
+#     type: joint_state_controller/JointStateController
+#     publish_rate: 50  
+
+#   # Position Controllers ---------------------------------------
+#   stem16y_controller:
+#     type: effort_controllers/JointPositionController
+#     joint: /stem16y
+#     pid: {p: 50, i: 1, d: 0.0}
+#   stem16x_controller:
+#     type: effort_controllers/JointPositionController
+#     joint: /stem16x
+#     pid: {p: 50, i: 1, d: 0.0}
+#   stem17y_controller:
+#     type: effort_controllers/JointPositionController
+#     joint: /stem17y
+#     pid: {p: 50, i: 1, d: 0.0}
+#   stem17x_controller:
+#     type: effort_controllers/JointPositionController
+#     joint: /stem17x
+#     pid: {p: 50, i: 1, d: 0.0}
+#   stem18y_controller:
+#     type: effort_controllers/JointPositionController
+#     joint: /stem18y
+#     pid: {p: 50, i: 1, d: 0.0}
+#   stem18x_controller:
+#     type: effort_controllers/JointPositionController
+#     joint: /stem18x
+#     pid: {p: 50, i: 1, d: 0.0}
+
+
