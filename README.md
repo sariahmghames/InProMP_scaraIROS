@@ -1,9 +1,7 @@
 # GRASPberry IntProMP
 
-This repo is WIP for coding enhancement, cleaning
+This repo is WIP for software optimization
 
-To playback gazebo recordings : gazebo -u -p ~/... path to /gzserver/state.log
-
-For more details Email: sariahmghames@gmail.com
+email: sariahmghames@gmail.com
 
 
