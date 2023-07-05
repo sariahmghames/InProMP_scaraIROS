@@ -1,4 +1,4 @@
-# GRASPberry IntProMP
+## IntProMP
 
 This repo is WIP for software optimization
 
