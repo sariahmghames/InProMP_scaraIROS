@@ -1,4 +1,5 @@
 ## IntProMP
+This repository provides a machine learning-based technique to learn an automated harvesting task from clusters. The technique proposed leverages the generation of probabilistic mevement primitives in an interactive fashion with the clusters. The proposed technique is experimentally tested on 3-dofs scara arm.
 
 The scientific content of this work can be found @ https://ieeexplore.ieee.org/abstract/document/9341728. To cite this work, please refer to the proceedings of the International Conference on Intelligent Robots and Systems (IROS 2020), with the following citation:
 
